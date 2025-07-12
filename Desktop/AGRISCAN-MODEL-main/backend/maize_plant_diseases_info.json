@@ -1,0 +1,74 @@
+{
+"maize_ear_rot": {
+"symptoms": "Discolored kernels with moldy appearance. Infected ears may show white, pink, or gray fungal growth. Bad odor and reduced grain quality are common.",
+"prevention": "Plant resistant hybrids, rotate crops with non-hosts (e.g., legumes), and avoid insect damage to ears.",
+"control": "Harvest early and dry grains below 15% moisture. Remove infected plant debris after harvest.",
+"chemicals": ["Prothioconazole (Proline)", "Tebuconazole (Folicur)"]
+},
+"maize_grasshopper": {
+"symptoms": "Irregular holes on leaves and silks, defoliation in extreme cases.",
+"prevention": "Keep field borders clean and mowed. Early planting avoids peak infestation periods.",
+"control": "Monitor populations and use biological control. Apply insecticides when needed.",
+"chemicals": ["Carbaryl (Sevin)", "Lambda-cyhalothrin (Karate)", "Malathion"]
+},
+"Maize_fall_armyworm": {
+"symptoms": "Windowpane feeding on young leaves, ragged edges, black frass in whorls.",
+"prevention": "Plant early, use pheromone traps, and promote natural enemies.",
+"control": "Apply insecticides at the whorl stage. Consider Bt maize.",
+"chemicals":["Emamectin benzoate (Proclaim)", "Spinetoram (Radiant)", "Chlorantraniliprole (Coragen)"]
+},
+"maize_leaf_beetle": {
+"symptoms": "Feeding scars and small holes on leaves.",
+"prevention": "Early planting and crop rotation.",
+"control": "Manual collection or insecticide application at early infestation.",
+"chemicals": ["Cypermethrin", "Imidacloprid (Confidor)", "Permethrin"]
+},
+"maize_healthy": {
+"symptoms": "Green, upright leaves, healthy stalks, strong root development.",
+"prevention": "Balanced fertilizer application and proper planting practices.",
+"control": "Maintain good hygiene and early pest scouting.",
+"chemicals": []
+},
+"maize_lethal_necrosis": {
+"symptoms": "Chlorotic mottling on leaves, necrosis, stunting, dead heart.",
+"prevention": "Use certified virus-free seeds, tolerant hybrids, and control insect vectors.",
+"control": "Rogue infected plants and rotate with non-host crops.",
+"chemicals": ["Thiamethoxam (Actara)", "Imidacloprid"]
+},
+"maize_leaf_blight": {
+"symptoms": "Large, tan lesions with reddish margins on lower leaves.",
+"prevention": "Use resistant varieties and avoid overhead irrigation.",
+"control": "Apply fungicides early and remove infected debris.",
+"chemicals": ["Azoxystrobin (Quadris)", "Propiconazole (Tilt)"]
+},
+"maize_leaf_spot": {
+"symptoms": "Small, brown spots with yellow halos on leaves.",
+"prevention": "Improve spacing and air circulation, crop rotation.",
+"control": "Use fungicides and remove plant residue.",
+"chemicals": ["Trifloxystrobin", "Pyraclostrobin (Headline)"]
+},
+"Maize_streak_virus": {
+"symptoms": "Yellow streaks along veins, stunting, twisted leaves.",
+"prevention": "Plant resistant varieties and control leafhopper vectors.",
+"control": "Rogue infected plants and avoid late planting.",
+"chemicals": ["Acetamiprid", "Imidacloprid"]
+},
+"maize_nutrient_deficiency": {
+"symptoms": "Yellowing (nitrogen), purpling (phosphorus), or tip burn (potassium).",
+"prevention": "Soil testing and balanced fertilization.",
+"control": "Apply deficient nutrients like urea, phosphate, or potash.",
+"chemicals": ["Urea", "Single Super Phosphate", "Muriate of Potash"]
+},
+"maize_rust": {
+"symptoms": "Reddish-brown pustules on leaves, turning black.",
+"prevention": "Use resistant hybrids and avoid late planting.",
+"control": "Apply fungicides early and remove debris.",
+"chemicals": ["Tebuconazole", "Mancozeb + Azoxystrobin"]
+},
+"maize_smuts": {
+"symptoms": "Grayish galls on ears and tassels filled with black spores.",
+"prevention": "Use resistant hybrids and avoid plant injury.",
+"control": "Destroy infected plants and rotate crops.",
+"chemicals": ["Seed treatment with Thiram or Carbendazim"]
+}
+}
