@@ -3,16 +3,19 @@ import './App.css'
 import {useEffect, useState, useRef} from 'react'
 import InventoryTable from './components/InventoryTable'
 import LiveActivityFeed from './components/LiveActivityFeed'
+import Analytics from './components/Analytics'
+import StockOperations from './components/StockOperations'
 
 const sample = [
-  {name:'Widget A', sku:'WID-A', stock:24},
-  {name:'Widget B', sku:'WID-B', stock:8},
-  {name:'Gadget', sku:'GAD-1', stock:3},
+  {name:'Widget A', seller:'Acme Corp', stock:24},
+  {name:'Widget B', seller:'TechSupply Inc', stock:8},
+  {name:'Gadget', seller:'Global Traders', stock:3},
 ]
 
 export default function App(){
-  const [items, setItems] = useState(sample)
+  const [branchInventories, setBranchInventories] = useState([])
   const [events, setEvents] = useState([])
+  const [currentView, setCurrentView] = useState('overview')
   const wsRef = useRef(null)
 
   useEffect(()=>{
@@ -20,11 +23,11 @@ export default function App(){
     async function loadInventory(){
       try{
         const base = (location.hostname==='localhost')? 'http://localhost:8000':'http://' + location.hostname
-        const res = await fetch(base + '/admin/inventory')
+        const res = await fetch(base + '/admin/branches-inventory')
         if(res.ok){
           const data = await res.json()
-          setItems(data.map(d=>({name:d.product_name||d.sku, sku:d.sku, stock:d.stock})))
-          setEvents(e=>[{type:'info',message:'Loaded inventory from backend',ts:Date.now()},...e])
+          setBranchInventories(data)
+          setEvents(e=>[{type:'info',message:'Loaded branch inventories from backend',ts:Date.now()},...e])
         }
       }catch(err){
         setEvents(e=>[{type:'error',message:'Failed to load inventory',ts:Date.now()},...e])
@@ -43,7 +46,9 @@ export default function App(){
           const data = JSON.parse(m.data)
           // backend broadcasts {sku, stock, seller, action}
           if(data.sku){
-            setItems(cur=>cur.map(it=> it.sku===data.sku? {...it, stock:data.stock}: it))
+            // Instead of trying to patch nested states, simply trigger a fresh reload
+            // of the branch inventories to ensure perfect sync
+            loadInventory();
             setEvents(e=>[{type:'update',message:`${data.sku} ${data.action||'update'} stock=${data.stock}`,ts:Date.now()},...e])
           } else {
             setEvents(e=>[{type:'event',message: JSON.stringify(data),ts:Date.now()},...e])
@@ -63,13 +68,16 @@ export default function App(){
     const fallback = setTimeout(()=>{
       if(!ws || ws.readyState !== WebSocket.OPEN){
         const t = setInterval(()=>{
-          setItems(cur=>{
+          setBranchInventories(cur=>{
             if(cur.length===0) return cur
-            const copy = [...cur]
-            const i = Math.floor(Math.random()*copy.length)
-            const change = Math.floor(Math.random()*5)-2
-            copy[i] = {...copy[i], stock: Math.max(0, copy[i].stock + change)}
-            setEvents(e=>[{type:'mock',message:`${copy[i].sku} stock=${copy[i].stock}`,ts:Date.now()},...e])
+            const copy = JSON.parse(JSON.stringify(cur))
+            const bIdx = Math.floor(Math.random()*copy.length)
+            if(copy[bIdx].items.length > 0){
+              const i = Math.floor(Math.random()*copy[bIdx].items.length)
+              const change = Math.floor(Math.random()*5)-2
+              copy[bIdx].items[i].stock = Math.max(0, copy[bIdx].items[i].stock + change)
+              setEvents(e=>[{type:'mock',message:`${copy[bIdx].items[i].name} stock updated dynamically`,ts:Date.now()},...e])
+            }
             return copy
           })
         },5000)
@@ -84,14 +92,58 @@ export default function App(){
   },[])
 
   return (
-    <div className="app">
-      <header>
-        <h1>Admin Dashboard</h1>
-      </header>
-      <div className="grid">
-        <InventoryTable items={items} />
-        <LiveActivityFeed events={events} />
-      </div>
+    <div className="app-container">
+      <aside className="sidebar">
+        <div className="brand">SKYLIT DASHBOARD</div>
+        <button 
+          className={`nav-item ${currentView === 'overview' ? 'active' : ''}`}
+          onClick={() => setCurrentView('overview')}
+        >
+          Live Overview
+        </button>
+        <button 
+          className={`nav-item ${currentView === 'analytics' ? 'active' : ''}`}
+          onClick={() => setCurrentView('analytics')}
+        >
+          Analytics & Enquiries
+        </button>
+        <button 
+          className={`nav-item ${currentView === 'operations' ? 'active' : ''}`}
+          onClick={() => setCurrentView('operations')}
+        >
+          Stock Operations
+        </button>
+      </aside>
+
+      <main className="main-content">
+        {currentView === 'overview' && (
+          <div className="fade-in">
+            <h2 className="card-title" style={{fontSize: '28px', color: '#fff', marginBottom: '8px'}}>Real-Time Operations</h2>
+            <p style={{color: 'var(--text-muted)', marginBottom: '24px'}}>Live view of active warehouse operations and global inventory levels.</p>
+            <div className="grid-overview">
+              <div className="pane-glass p-0 flex flex-col gap-4 max-h-[80vh] overflow-y-auto">
+                {branchInventories.map(b => (
+                   <InventoryTable key={b.branch_name} branchName={b.branch_name} items={b.items} />
+                ))}
+                {branchInventories.length === 0 && (
+                   <div style={{padding: '2rem', textAlign: 'center'}}>No branches found...</div>
+                )}
+              </div>
+              <div className="pane-glass">
+                <LiveActivityFeed events={events} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {currentView === 'analytics' && (
+          <Analytics />
+        )}
+
+        {currentView === 'operations' && (
+          <StockOperations />
+        )}
+      </main>
     </div>
   )
 }

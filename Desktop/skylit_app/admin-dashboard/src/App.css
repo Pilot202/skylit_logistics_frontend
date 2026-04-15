@@ -41,21 +41,44 @@
   padding: 1rem;
   box-shadow: 0 6px 18px rgba(20, 20, 60, 0.08);
 }
+.card.inventory {
+  background: linear-gradient(135deg, #065f46, #047857); /* Emerald green */
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.25);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.card.inventory h2 {
+  color: white;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
 .inventory table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 .inventory th, .inventory td {
-  padding: 8px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   text-align: left;
 }
+.inventory th {
+  color: #a7f3d0;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 .inventory .low {
-  color: #b91c1c;
+  color: #fca5a5;
   font-weight: 700;
 }
 .inventory .ok {
-  color: #047857;
+  color: #d1fae5;
+  font-weight: 600;
 }
 .feed ul {
   list-style: none;
